@@ -2,6 +2,7 @@ import { View, Text, SafeAreaView, StyleSheet, FlatList } from "react-native";
 import React from "react";
 import GeneralHeaderText from "@/components/ui/GeneralHeaderText";
 import { FilledButton } from "@/components/ui/FilledButton";
+import CustomHeader from "@/components/ui/CustomHeader";
 
 const languageToLearn = () => {
 	interface RenderProps {
@@ -56,6 +57,7 @@ const languageToLearn = () => {
 		<View style={styles.container}>
 			<SafeAreaView>
 				<View style={{ paddingHorizontal: 17 }}>
+					<CustomHeader />
 					<GeneralHeaderText
 						title="I want to learn..."
 						position="flex-start"

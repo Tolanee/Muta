@@ -6,6 +6,7 @@ import { Link, router } from "expo-router";
 
 import { z } from "zod";
 import apiClient from "@/api/apiClient";
+import  CustomHeader  from "@/components/ui/CustomHeader";
 
 // Define the schema for the form data
 const signUpSchema = z.object({
@@ -58,6 +59,7 @@ const NamePassword = () => {
 
 	return (
 		<View style={styles.container}>
+		<CustomHeader />
 			<GeneralHeaderText title="Enter name and password" position="center"/>
 			<CustomInput
 				placeholder="Enter email address"

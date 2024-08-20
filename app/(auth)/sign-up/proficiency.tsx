@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, SafeAreaView } from "react-native";
-import CheckBox from "@react-native-community/checkbox";
-import { create } from "react-test-renderer";
-import { FilledButton } from "../../../components/ui/FilledButton";
+import CheckBox from "expo-checkbox";
+import { FilledButton } from "@/components/ui/FilledButton";
+import CustomHeader from "@/components/ui/CustomHeader";
+import GeneralHeaderText from "@/components/ui/GeneralHeaderText";
+import { Beginner, Intermediate, Novice } from "@/assets/icons/Icons";
 
 const App = () => {
 	const [checkboxValues, setCheckboxValues] = useState({
@@ -22,16 +24,35 @@ const App = () => {
 		<View style={styles.container}>
 			<SafeAreaView>
 				<View style={{ padding: 17 }}>
-                <GeneralHeaderText
-						title="I want to learn..."
+					<CustomHeader />
+					<GeneralHeaderText
+						title="How would you rate your proficiency in Yoruba?"
 						position="flex-start"
 					/>
 					<View style={styles.item}>
-						<Text
-							style={{ color: "#fff", fontSize: 16, fontFamily: "Axiforma" }}
-						>
-							I speak English
-						</Text>
+						<View style={{ flexDirection: "row" }}>
+							<Novice />
+							<View>
+								<Text
+									style={{
+										color: "#fff",
+										fontSize: 16,
+										fontFamily: "Axiforma",
+									}}
+								>
+									Novice
+								</Text>
+								<Text
+									style={{
+										color: "#fff",
+										fontSize: 16,
+										fontFamily: "Axiforma",
+									}}
+								>
+									I’m new to Yoruba
+								</Text>
+							</View>
+						</View>
 						<CheckBox
 							value={checkboxValues.checkbox1}
 							onValueChange={() => handleCheckboxChange("checkbox1")}
@@ -44,11 +65,31 @@ const App = () => {
 					</View>
 
 					<View style={styles.item}>
-						<Text
-							style={{ color: "#fff", fontSize: 16, fontFamily: "Axiforma" }}
-						>
-							Je parle Français
-						</Text>
+						<View style={{ flexDirection: "row" }}>
+							<Beginner />
+
+							<View>
+								<Text
+									style={{
+										color: "#fff",
+										fontSize: 16,
+										fontFamily: "Axiforma",
+									}}
+								>
+									Beginner
+								</Text>
+								<Text
+									style={{
+										color: "#fff",
+										fontSize: 16,
+										fontFamily: "Axiforma",
+									}}
+								>
+									Beginner
+								</Text>
+							</View>
+						</View>
+
 						<CheckBox
 							value={checkboxValues.checkbox2}
 							onValueChange={() => handleCheckboxChange("checkbox2")}
@@ -61,31 +102,33 @@ const App = () => {
 					</View>
 
 					<View style={styles.item}>
-						<Text
-							style={{ color: "#fff", fontSize: 16, fontFamily: "Axiforma" }}
-						>
-							Eu falo Português
-						</Text>
+						<View style={{ flexDirection: "row" }}>
+							<Intermediate />
+							<View>
+								<Text
+									style={{
+										color: "#fff",
+										fontSize: 16,
+										fontFamily: "Axiforma",
+									}}
+								>
+									Intermediate
+								</Text>
+								<Text
+									style={{
+										color: "#fff",
+										fontSize: 16,
+										fontFamily: "Axiforma",
+									}}
+								>
+									Intermediate
+								</Text>
+							</View>
+						</View>
+
 						<CheckBox
 							value={checkboxValues.checkbox3}
 							onValueChange={() => handleCheckboxChange("checkbox3")}
-							tintColors="#4CA6A8"
-							onCheckColor="#fff"
-							onFillColor="#4CA6A8"
-							onTintColor="#4CA6A8"
-							style={{ height: 15 }}
-						/>
-					</View>
-
-					<View style={styles.item}>
-						<Text
-							style={{ color: "#fff", fontSize: 16, fontFamily: "Axiforma" }}
-						>
-							Yo hablo Español
-						</Text>
-						<CheckBox
-							value={checkboxValues.checkbox4}
-							onValueChange={() => handleCheckboxChange("checkbox4")}
 							tintColors="#4CA6A8"
 							onCheckColor="#fff"
 							onFillColor="#4CA6A8"
@@ -124,4 +167,3 @@ export const styles = StyleSheet.create({
 		marginVertical: 17,
 	},
 });
-

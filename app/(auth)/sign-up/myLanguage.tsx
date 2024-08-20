@@ -1,94 +1,50 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, SafeAreaView } from "react-native";
-import CheckBox from "@react-native-community/checkbox";
-import { create } from "react-test-renderer";
+import { View, Text, StyleSheet, SafeAreaView, FlatList } from "react-native";
+import CheckBox from "expo-checkbox";
+
 import { FilledButton } from "../../../components/ui/FilledButton";
+import CustomHeader from "@/components/ui/CustomHeader";
 
 const App = () => {
-	const [checkboxValues, setCheckboxValues] = useState({
-		checkbox1: false,
-		checkbox2: false,
-		checkbox3: false,
-		checkbox4: false,
-	});
+	const [items, setItems] = useState([
+		{ id: "1", label: "I speak English", isChecked: false },
+		{ id: "2", label: "Je parle Français", isChecked: false },
+		{ id: "3", label: "Eu falo Português", isChecked: false },
+		{ id: "4", label: "Yo hablo Español", isChecked: false },
+	]);
 
-	const handleCheckboxChange = (checkboxName) => {
-		setCheckboxValues((prevValues) => {
-			return { ...prevValues, [checkboxName]: !prevValues[checkboxName] };
-		});
+	const toggleCheckbox = (id) => {
+		setItems((prevItems) =>
+			prevItems.map((item) =>
+				item.id === id ? { ...item, isChecked: !item.isChecked } : item,
+			),
+		);
 	};
+
+	const renderItem = ({ item }) => (
+		<View style={styles.item}>
+			<Text style={{ color: "#fff", fontSize: 16, fontFamily: "Axiforma" }}>
+				{item.label}
+			</Text>
+			<CheckBox
+				value={item.isChecked}
+				onValueChange={() => toggleCheckbox(item.id)}
+				color={item.isChecked ? "#4CA6A8" : undefined}
+				style={styles.box}
+			/>
+		</View>
+	);
 
 	return (
 		<View style={styles.container}>
 			<SafeAreaView>
 				<View style={{ padding: 17 }}>
-					<View style={styles.item}>
-						<Text
-							style={{ color: "#fff", fontSize: 16, fontFamily: "Axiforma" }}
-						>
-							I speak English
-						</Text>
-						<CheckBox
-							value={checkboxValues.checkbox1}
-							onValueChange={() => handleCheckboxChange("checkbox1")}
-							tintColors="#4CA6A8"
-							onCheckColor="#fff"
-							onFillColor="#4CA6A8"
-							onTintColor="#4CA6A8"
-							style={{ height: 15 }}
-						/>
-					</View>
-
-					<View style={styles.item}>
-						<Text
-							style={{ color: "#fff", fontSize: 16, fontFamily: "Axiforma" }}
-						>
-							Je parle Français
-						</Text>
-						<CheckBox
-							value={checkboxValues.checkbox2}
-							onValueChange={() => handleCheckboxChange("checkbox2")}
-							tintColors="#4CA6A8"
-							onCheckColor="#fff"
-							onFillColor="#4CA6A8"
-							onTintColor="#4CA6A8"
-							style={{ height: 15 }}
-						/>
-					</View>
-
-					<View style={styles.item}>
-						<Text
-							style={{ color: "#fff", fontSize: 16, fontFamily: "Axiforma" }}
-						>
-							Eu falo Português
-						</Text>
-						<CheckBox
-							value={checkboxValues.checkbox3}
-							onValueChange={() => handleCheckboxChange("checkbox3")}
-							tintColors="#4CA6A8"
-							onCheckColor="#fff"
-							onFillColor="#4CA6A8"
-							onTintColor="#4CA6A8"
-							style={{ height: 15 }}
-						/>
-					</View>
-
-					<View style={styles.item}>
-						<Text
-							style={{ color: "#fff", fontSize: 16, fontFamily: "Axiforma" }}
-						>
-							Yo hablo Español
-						</Text>
-						<CheckBox
-							value={checkboxValues.checkbox4}
-							onValueChange={() => handleCheckboxChange("checkbox4")}
-							tintColors="#4CA6A8"
-							onCheckColor="#fff"
-							onFillColor="#4CA6A8"
-							onTintColor="#4CA6A8"
-							style={{ height: 15 }}
-						/>
-					</View>
+					<CustomHeader />
+					<FlatList
+						data={items}
+						keyExtractor={(item) => item.id}
+						renderItem={renderItem}
+					/>
 				</View>
 
 				<View>
@@ -118,5 +74,8 @@ export const styles = StyleSheet.create({
 		justifyContent: "space-between",
 		padding: 17,
 		marginVertical: 17,
+	},
+	box: {
+		borderRadius: 100,
 	},
 });
