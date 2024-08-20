@@ -58,7 +58,7 @@ const NamePassword = () => {
 
 	return (
 		<View style={styles.container}>
-			<GeneralHeaderText title="Enter name and password" />
+			<GeneralHeaderText title="Enter name and password" position="center"/>
 			<CustomInput
 				placeholder="Enter email address"
 				type="email"

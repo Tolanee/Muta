@@ -17,7 +17,7 @@ export const FilledButton = ({ title, href }: FilledButtonProps) => {
 				asChild
 			>
 				<TouchableOpacity style={styles.container}>
-					<Text>{title}</Text>
+					<Text style={styles.text}>{title}</Text>
 				</TouchableOpacity>
 			</Link>
 		</View>
@@ -32,7 +32,11 @@ export const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		borderRadius: 8,
-		width: 342,
 		backgroundColor: "#4CA6A8",
+	},
+	text: {
+		fontSize: 14,
+		fontFamily: "Axiforma",
+		fontWeight: 700,
 	},
 });

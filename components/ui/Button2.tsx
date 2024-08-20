@@ -35,5 +35,8 @@ export const styles = StyleSheet.create({
 	},
 	title: {
 		color: "#fff",
+		fontSize: 14,
+		fontFamily: "Axiforma",
+		fontWeight: 700,
 	},
 });

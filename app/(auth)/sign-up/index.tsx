@@ -8,7 +8,7 @@ import CustomInput from "../../../components/ui/CustomInput";
 const SignUp = () => {
 	return (
 		<View style={styles.container}>
-			<GeneralHeaderText title="Sign up and start learning right away!" />
+			<GeneralHeaderText title="Sign up and start learning right away!" position="center" />
 			<CustomInput
 				placeholder="Enter email address"
 				type="email"
@@ -17,7 +17,7 @@ const SignUp = () => {
 			<View>
 				<FilledButton
 					title="SIGN UP WITH EMAIL"
-					href="/sign-up/namePassword"
+					href="/sign-up/myLanguage"
 				/>
 			</View>
 

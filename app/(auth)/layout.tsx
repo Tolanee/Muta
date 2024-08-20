@@ -1,30 +1,31 @@
 import { Stack } from "expo-router";
 import ArrowLeft from "@/assets/images/designs/Back.svg";
+import SignIn from "./sign-in";
+import SignUp from "./sign-up";
 import React from "react";
 
 export default function AuthLayout() {
 	return (
-		<Stack
+		<Stack.Navigator
 			screenOptions={{
-				headerStyle: {
-					backgroundColor: "#f4511e",
-				},
-				headerTintColor: "#fff",
-				headerTitleStyle: {
-					fontWeight: "light",
-				},
+				headerShown: false,
 			}}
 		>
 			<Stack.Screen
 				name="sign-in"
-				options={{ headerShown: false }}
+				options={{
+					headerShown: false,
+				}}
+				component={SignIn}
 			/>
 			<Stack.Screen
 				name="sign-up"
 				options={{
 					headerShown: false,
+					headerBackground: "#ED2939",
 				}}
+				component={SignUp}
 			/>
-		</Stack>
+		</Stack.Navigator>
 	);
 }
