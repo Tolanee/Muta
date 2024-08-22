@@ -6,7 +6,7 @@ import { Link, router } from "expo-router";
 
 import { z } from "zod";
 import apiClient from "@/api/apiClient";
-import  CustomHeader  from "@/components/ui/CustomHeader";
+import CustomHeader from "@/components/ui/CustomHeader";
 
 // Define the schema for the form data
 const signUpSchema = z.object({
@@ -59,10 +59,13 @@ const NamePassword = () => {
 
 	return (
 		<View style={styles.container}>
-		<CustomHeader />
-			<GeneralHeaderText title="Enter name and password" position="center"/>
+			<CustomHeader />
+			<GeneralHeaderText
+				title="Enter name and password"
+				position="center"
+			/>
 			<CustomInput
-				placeholder="Enter email address"
+				placeholder=""
 				type="email"
 				label="Email"
 				value={formData.email}
@@ -109,7 +112,7 @@ const NamePassword = () => {
 			>
 				<Text style={{ color: "#FFF" }}>
 					Already a Muta User?
-					<Link href="/sign-in">
+					<Link href="sign-in">
 						<Text style={{ color: "#4CA6A8" }}> Log In</Text>
 					</Link>
 				</Text>

@@ -1,48 +1,81 @@
-import { View, Text, StyleSheet } from "react-native";
-import React from "react";
-import { FilledButton } from "../../../components/ui/FilledButton";
-import GeneralHeaderText from "@/components/ui/GeneralHeaderText";
-import { Link } from "expo-router";
-import CustomInput from "../../../components/ui/CustomInput";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, SafeAreaView, FlatList } from "react-native";
+import CheckBox from "expo-checkbox";
 
-const SignUp = () => {
+import  FilledButton  from "../../../components/ui/FilledButton";
+import CustomHeader from "@/components/ui/CustomHeader";
+
+const App = () => {
+	const [items, setItems] = useState([
+		{ id: "1", label: "I speak English", isChecked: false },
+		{ id: "2", label: "Je parle Français", isChecked: false },
+		{ id: "3", label: "Eu falo Português", isChecked: false },
+		{ id: "4", label: "Yo hablo Español", isChecked: false },
+	]);
+
+	const toggleCheckbox = (id) => {
+		setItems((prevItems) =>
+			prevItems.map((item) =>
+				item.id === id ? { ...item, isChecked: !item.isChecked } : item,
+			),
+		);
+	};
+
+	const renderItem = ({ item }) => (
+		<View style={styles.item}>
+			<Text style={{ color: "#fff", fontSize: 16, fontFamily: "Axiforma" }}>
+				{item.label}
+			</Text>
+			<CheckBox
+				value={item.isChecked}
+				onValueChange={() => toggleCheckbox(item.id)}
+				color={item.isChecked ? "#4CA6A8" : undefined}
+				style={styles.box}
+			/>
+		</View>
+	);
+
 	return (
 		<View style={styles.container}>
-			<GeneralHeaderText title="Sign up and start learning right away!" position="center" />
-			<CustomInput
-				placeholder="Enter email address"
-				type="email"
-				label="Email"
-			/>
-			<View>
-				<FilledButton
-					title="SIGN UP WITH EMAIL"
-					href="/sign-up/myLanguage"
-				/>
-			</View>
+			<SafeAreaView>
+				<View style={{ padding: 17 }}>
+					<CustomHeader />
+					<FlatList
+						data={items}
+						keyExtractor={(item) => item.id}
+						renderItem={renderItem}
+					/>
+				</View>
 
-			<View
-				style={{
-					flexDirection: "row",
-					alignItems: "center",
-					justifyContent: "center",
-				}}
-			>
-				<Text style={{ color: "#FFF" }}>
-					Already a Muta User?
-					<Link href="/sign-in">
-						<Text style={{ color: "#4CA6A8" }}> Log In</Text>
-					</Link>
-				</Text>
-			</View>
+				<View>
+					<FilledButton
+						title="CONTINUE"
+						href="sign-up/languageToLearn"
+					/>
+				</View>
+			</SafeAreaView>
 		</View>
 	);
 };
 
-export default SignUp;
+export default App;
 export const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+
 		backgroundColor: "#1B1E26",
+	},
+
+	item: {
+		borderWidth: 1,
+		borderColor: "#2F3540",
+		borderRadius: 8,
+		flexDirection: "row",
+		justifyContent: "space-between",
+		padding: 17,
+		marginVertical: 17,
+	},
+	box: {
+		borderRadius: 100,
 	},
 });

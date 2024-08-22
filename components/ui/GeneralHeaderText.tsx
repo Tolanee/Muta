@@ -12,7 +12,7 @@ const GeneralHeaderText = ({ title, position }: GeneralHeaderProps) => {
 			flexDirection: "row",
 			alignItems: position ? position : "center",
 			justifyContent: position ? position : "center",
-			paddingVertical: 17,
+			padding: 10,
 		},
 
 		title: {
@@ -21,6 +21,7 @@ const GeneralHeaderText = ({ title, position }: GeneralHeaderProps) => {
 			fontFamily: "Axiforma",
 			fontWeight: 700,
 			lineHeight: 32,
+			paddingBottom: 10,
 		},
 	});
 	return (

@@ -49,13 +49,13 @@ const Welcome = () => {
 			<View>
 				<FilledButton
 					title="GET STARTED"
-					href="/sign-up/myLanguage"
+					href="sign-up"
 				/>
 			</View>
 			<View>
 				<Button2
 					title="LOG IN"
-					href="/sign-in"
+					href="sign-in"
 				/>
 			</View>
 		</View>

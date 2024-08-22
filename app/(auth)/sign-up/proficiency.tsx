@@ -5,14 +5,17 @@ import { FilledButton } from "@/components/ui/FilledButton";
 import CustomHeader from "@/components/ui/CustomHeader";
 import GeneralHeaderText from "@/components/ui/GeneralHeaderText";
 import { Beginner, Intermediate, Novice } from "@/assets/icons/Icons";
+import { useLocalSearchParams } from "expo-router";
 
 const App = () => {
+	const { language } = useLocalSearchParams();
 	const [checkboxValues, setCheckboxValues] = useState({
 		checkbox1: false,
 		checkbox2: false,
 		checkbox3: false,
 		checkbox4: false,
 	});
+	
 
 	const handleCheckboxChange = (checkboxName) => {
 		setCheckboxValues((prevValues) => {
@@ -26,18 +29,19 @@ const App = () => {
 				<View style={{ padding: 17 }}>
 					<CustomHeader />
 					<GeneralHeaderText
-						title="How would you rate your proficiency in Yoruba?"
+						title={`How would you rate your proficiency in ${language}?`}
 						position="flex-start"
 					/>
 					<View style={styles.item}>
 						<View style={{ flexDirection: "row" }}>
 							<Novice />
-							<View>
+							<View style={{ paddingHorizontal: 10 }}>
 								<Text
 									style={{
 										color: "#fff",
 										fontSize: 16,
 										fontFamily: "Axiforma",
+										lineHeight: 24,
 									}}
 								>
 									Novice
@@ -45,22 +49,20 @@ const App = () => {
 								<Text
 									style={{
 										color: "#fff",
-										fontSize: 16,
+										fontSize: 14,
 										fontFamily: "Axiforma",
+										lineHeight: 24,
 									}}
 								>
-									I’m new to Yoruba
+									I’m new to {language}
 								</Text>
 							</View>
 						</View>
 						<CheckBox
 							value={checkboxValues.checkbox1}
 							onValueChange={() => handleCheckboxChange("checkbox1")}
-							tintColors="#4CA6A8"
-							onCheckColor="#fff"
-							onFillColor="#4CA6A8"
-							onTintColor="#4CA6A8"
-							style={{ height: 15 }}
+							color={checkboxValues.checkbox1 ? "#4CA6A8" : undefined}
+							style={styles.box}
 						/>
 					</View>
 
@@ -68,12 +70,13 @@ const App = () => {
 						<View style={{ flexDirection: "row" }}>
 							<Beginner />
 
-							<View>
+							<View style={{ paddingHorizontal: 10 }}>
 								<Text
 									style={{
 										color: "#fff",
 										fontSize: 16,
 										fontFamily: "Axiforma",
+										lineHeight: 24,
 									}}
 								>
 									Beginner
@@ -81,11 +84,12 @@ const App = () => {
 								<Text
 									style={{
 										color: "#fff",
-										fontSize: 16,
+										fontSize: 14,
 										fontFamily: "Axiforma",
+										lineHeight: 24,
 									}}
 								>
-									Beginner
+									I know some words in {language}
 								</Text>
 							</View>
 						</View>
@@ -93,23 +97,21 @@ const App = () => {
 						<CheckBox
 							value={checkboxValues.checkbox2}
 							onValueChange={() => handleCheckboxChange("checkbox2")}
-							tintColors="#4CA6A8"
-							onCheckColor="#fff"
-							onFillColor="#4CA6A8"
-							onTintColor="#4CA6A8"
-							style={{ height: 15 }}
+							color={checkboxValues.checkbox2 ? "#4CA6A8" : undefined}
+							style={styles.box}
 						/>
 					</View>
 
 					<View style={styles.item}>
 						<View style={{ flexDirection: "row" }}>
 							<Intermediate />
-							<View>
+							<View style={{ paddingHorizontal: 10 }}>
 								<Text
 									style={{
 										color: "#fff",
 										fontSize: 16,
 										fontFamily: "Axiforma",
+										lineHeight: 24,
 									}}
 								>
 									Intermediate
@@ -117,11 +119,12 @@ const App = () => {
 								<Text
 									style={{
 										color: "#fff",
-										fontSize: 16,
+										fontSize: 14,
 										fontFamily: "Axiforma",
+										lineHeight: 24,
 									}}
 								>
-									Intermediate
+									{`I can have simple conversations in \n ${language}`}
 								</Text>
 							</View>
 						</View>
@@ -129,11 +132,8 @@ const App = () => {
 						<CheckBox
 							value={checkboxValues.checkbox3}
 							onValueChange={() => handleCheckboxChange("checkbox3")}
-							tintColors="#4CA6A8"
-							onCheckColor="#fff"
-							onFillColor="#4CA6A8"
-							onTintColor="#4CA6A8"
-							style={{ height: 15 }}
+							color={checkboxValues.checkbox3 ? "#4CA6A8" : undefined}
+							style={styles.box}
 						/>
 					</View>
 				</View>
@@ -141,7 +141,7 @@ const App = () => {
 				<View>
 					<FilledButton
 						title="CONTINUE"
-						href="/sign-up/languageToLearn"
+						href="sign-up/signUp"
 					/>
 				</View>
 			</SafeAreaView>
@@ -165,5 +165,8 @@ export const styles = StyleSheet.create({
 		justifyContent: "space-between",
 		padding: 17,
 		marginVertical: 17,
+	},
+	box: {
+		borderRadius: 100,
 	},
 });

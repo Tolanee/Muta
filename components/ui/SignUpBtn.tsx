@@ -1,15 +1,14 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import React from "react";
-import type {} from "react-native-gesture-handler";
-import { create } from "react-test-renderer";
 import { Link } from "expo-router";
 
-interface FilledButtonProps {
+interface SignUpBtnProps {
 	title: string;
-	href: any;
+	href: () => void;
+	image: any;
 }
 
-export const FilledButton = ({ title, href }: FilledButtonProps) => {
+export const SignUpBtn = ({ title, href, image }: SignUpBtnProps) => {
 	return (
 		<View style={{ margin: 17 }}>
 			<Link
@@ -17,6 +16,7 @@ export const FilledButton = ({ title, href }: FilledButtonProps) => {
 				asChild
 			>
 				<TouchableOpacity style={styles.container}>
+					<View style={styles.image}>{image}</View>
 					<Text style={styles.text}>{title}</Text>
 				</TouchableOpacity>
 			</Link>
@@ -24,19 +24,21 @@ export const FilledButton = ({ title, href }: FilledButtonProps) => {
 	);
 };
 
-export default FilledButton;
+export default SignUpBtn;
 export const styles = StyleSheet.create({
 	container: {
 		padding: 17,
 		flexDirection: "row",
-		justifyContent: "center",
 		alignItems: "center",
 		borderRadius: 8,
-		backgroundColor: "#4CA6A8",
+		backgroundColor: "#fff",
 	},
 	text: {
 		fontSize: 14,
 		fontFamily: "Axiforma",
 		fontWeight: 700,
+	},
+	image: {
+		paddingHorizontal: 15,
 	},
 });

@@ -1,7 +1,7 @@
 import { Stack } from "expo-router";
 import ArrowLeft from "@/assets/images/designs/Back.svg";
 import SignIn from "./sign-in";
-import SignUp from "./sign-up";
+import SignUp from "./sign-up/signUp";
 import React from "react";
 
 export default function AuthLayout() {

@@ -8,7 +8,7 @@ import CustomHeader from "../../../components/ui/CustomHeader";
 import SignUpBtn from "@/components/ui/SignUpBtn";
 import { Google, Facebook } from "../../../assets/icons/Icons";
 
-const SignIn = () => {
+const SignUp = () => {
 	const goToGoogle = () => {
 		router.push("google.com");
 	};
@@ -17,7 +17,7 @@ const SignIn = () => {
 			<SafeAreaView>
 				<CustomHeader />
 				<GeneralHeaderText
-					title="Log in to Muta"
+					title="Sign up and start learning right away!"
 					position="center"
 				/>
 				<SignUpBtn
@@ -28,7 +28,7 @@ const SignIn = () => {
 				<SignUpBtn
 					image={<Facebook />}
 					title="Sign Up with Facebook"
-					href={() => goToFacebook}
+					href={() => goToFacebook} // Change goToGoogle to goToFacebook
 				/>
 				<CustomInput
 					placeholder="Enter email address"
@@ -37,8 +37,8 @@ const SignIn = () => {
 				/>
 				<View>
 					<FilledButton
-						title="SIGN IN WITH EMAIL"
-						href="sign-in/enterPassword"
+						title="SIGN UP WITH EMAIL"
+						href="sign-up"
 					/>
 				</View>
 
@@ -61,7 +61,7 @@ const SignIn = () => {
 	);
 };
 
-export default SignIn;
+export default SignUp;
 export const styles = StyleSheet.create({
 	container: {
 		flex: 1,

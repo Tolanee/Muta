@@ -1,56 +1,59 @@
-import { View, Text, SafeAreaView, StyleSheet, FlatList } from "react-native";
-import React from "react";
+import {
+	View,
+	Text,
+	SafeAreaView,
+	StyleSheet,
+	FlatList,
+	Image,
+	Pressable,
+	TouchableOpacity,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import GeneralHeaderText from "@/components/ui/GeneralHeaderText";
-import { FilledButton } from "@/components/ui/FilledButton";
+import FilledButton from "@/components/ui/FilledButton";
 import CustomHeader from "@/components/ui/CustomHeader";
+import { fetchData } from "@/api/requests";
+import { Link } from "expo-router";
 
 const languageToLearn = () => {
-	interface RenderProps {
-		item: string;
-	}
-	const languages = [
-		{
-			id: 1,
-			language: "Swahili",
-			icon: "",
-		},
-		{
-			id: 2,
-			language: "Swahili",
-			icon: "",
-		},
-		{
-			id: 3,
-			language: "Swahili",
-			icon: "",
-		},
-		{
-			id: 4,
-			language: "Swahili",
-			icon: "",
-		},
-		{
-			id: 5,
-			language: "Swahili",
-			icon: "",
-		},
-		{
-			id: 6,
-			language: "Swahili",
-			icon: "",
-		},
-		{
-			id: 7,
-			language: "Swahili",
-			icon: "",
-		},
-	];
+	const [data, setData] = useState(null);
+	const [error, setError] = useState(null);
+	const [lang, setLang] = useState("");
 
-	const _renderItems = ({ item }: RenderProps) => {
+	useEffect(() => {
+		fetchData("get-all-languages")
+			.then((res) => {
+				// console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+				// console.log("response", res.data);
+				setData(res.data);
+			})
+			.catch((error) => setError(error));
+	}, []);
+
+	// interface RenderProps {
+	// 	item: string;
+	// }
+
+	const _renderItems = ({ item }) => {
 		return (
-			<View style={styles.box}>
-				<Text>{item.language}</Text>
-			</View>
+			<TouchableOpacity
+				style={[
+					{
+						borderWidth: item.languageName === lang ? 2 : 1,
+						borderColor: item.languageName === lang ? "#4CA6A8" : "#ABB3C7",
+					},
+					styles.box,
+				]}
+				onPress={() => {
+					setLang(item.languageName);
+				}}
+			>
+				<Image
+					source={{ uri: item.languageIcon }}
+					style={{ width: 48, height: 48 }}
+				/>
+				<Text style={styles.text}>{item.languageName}</Text>
+			</TouchableOpacity>
 		);
 	};
 	return (
@@ -59,23 +62,32 @@ const languageToLearn = () => {
 				<View style={{ paddingHorizontal: 17 }}>
 					<CustomHeader />
 					<GeneralHeaderText
-						title="I want to learn..."
+						title="I want to learn...."
 						position="flex-start"
 					/>
 
 					<FlatList
-						data={languages}
+						data={data}
 						numColumns={2}
 						renderItem={({ item }) => <_renderItems item={item} />}
-						keyExtractor={(item) => item.id}
+						keyExtractor={(item) => item.language_id}
 					/>
 				</View>
 
 				<View>
-					<FilledButton
-						title="CONTINUE"
-						href="/sign-up/proficiency"
-					/>
+					<View style={{ margin: 17 }}>
+						<Link
+							href={{
+								pathname: "/sign-up/proficiency",
+								params: { language: lang },
+							}}
+							asChild
+						>
+							<TouchableOpacity style={styles.con}>
+								<Text style={styles.tex}>CONTINUE</Text>
+							</TouchableOpacity>
+						</Link>
+					</View>
 				</View>
 			</SafeAreaView>
 		</View>
@@ -92,10 +104,31 @@ export const styles = StyleSheet.create({
 
 	box: {
 		padding: 10,
-		borderWidth: 1,
-		borderColor: "#ABB3C7",
-		borderRadius: 8,
 
+		borderRadius: 8,
 		margin: 10,
+		flexDirection: "column",
+		alignItems: "center",
+		justifyContent: "center",
+		minWidth: "45%",
+	},
+	text: {
+		fontSize: 16,
+		color: "#ABB3C7",
+		paddingVertical: 8,
+	},
+
+	con: {
+		padding: 17,
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
+		borderRadius: 8,
+		backgroundColor: "#4CA6A8",
+	},
+	tex: {
+		fontSize: 14,
+		fontFamily: "Axiforma",
+		fontWeight: 700,
 	},
 });
