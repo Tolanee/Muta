@@ -1,3 +1,4 @@
+import store from "@/constants/store";
 import axios from "axios";
 
 const apiClient = axios.create({
@@ -9,8 +10,11 @@ const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use((config) => {
-	// Add token or any other data to headers
-	// config.headers.Authorization = `Bearer ${token}`;
+	const token = store.getState().token;
+	if (token) {
+		config.headers.Authorization = `Bearer ${token}`;
+	}
+
 	return config;
 });
 

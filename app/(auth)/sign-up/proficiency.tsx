@@ -1,21 +1,30 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+import {
+	View,
+	Text,
+	StyleSheet,
+	SafeAreaView,
+	TouchableOpacity,
+} from "react-native";
 import CheckBox from "expo-checkbox";
 import { FilledButton } from "@/components/ui/FilledButton";
 import CustomHeader from "@/components/ui/CustomHeader";
 import GeneralHeaderText from "@/components/ui/GeneralHeaderText";
 import { Beginner, Intermediate, Novice } from "@/assets/icons/Icons";
 import { useLocalSearchParams } from "expo-router";
+import { useSelector } from "react-redux";
+import store from "@/constants/store";
 
 const App = () => {
-	const { language } = useLocalSearchParams();
+	const language = useSelector((state) => state.language);
+	// const { language } = useLocalSearchParams();
+
 	const [checkboxValues, setCheckboxValues] = useState({
 		checkbox1: false,
 		checkbox2: false,
 		checkbox3: false,
 		checkbox4: false,
 	});
-	
 
 	const handleCheckboxChange = (checkboxName) => {
 		setCheckboxValues((prevValues) => {
@@ -29,10 +38,19 @@ const App = () => {
 				<View style={{ padding: 17 }}>
 					<CustomHeader />
 					<GeneralHeaderText
-						title={`How would you rate your proficiency in ${language}?`}
+						title={`How would you rate your proficiency in ${language.languageName}?`}
 						position="flex-start"
 					/>
-					<View style={styles.item}>
+					<TouchableOpacity
+						onPress={() => {
+							store.dispatch({ type: "SAVE_USER_TYPE", payload: "Novice" });
+							handleCheckboxChange("checkbox1");
+						}}
+						style={[
+							{ borderColor: checkboxValues.checkbox1 ? "#4CA6A8" : "#ABB3C7" },
+							styles.item,
+						]}
+					>
 						<View style={{ flexDirection: "row" }}>
 							<Novice />
 							<View style={{ paddingHorizontal: 10 }}>
@@ -54,7 +72,7 @@ const App = () => {
 										lineHeight: 24,
 									}}
 								>
-									I’m new to {language}
+									I’m new to {language.languageName}
 								</Text>
 							</View>
 						</View>
@@ -64,9 +82,18 @@ const App = () => {
 							color={checkboxValues.checkbox1 ? "#4CA6A8" : undefined}
 							style={styles.box}
 						/>
-					</View>
+					</TouchableOpacity>
 
-					<View style={styles.item}>
+					<TouchableOpacity
+						onPress={() => {
+							store.dispatch({ type: "SAVE_USER_TYPE", payload: "Beginner" });
+							handleCheckboxChange("checkbox2");
+						}}
+						style={[
+							{ borderColor: checkboxValues.checkbox2 ? "#4CA6A8" : "#ABB3C7" },
+							styles.item,
+						]}
+					>
 						<View style={{ flexDirection: "row" }}>
 							<Beginner />
 
@@ -89,7 +116,7 @@ const App = () => {
 										lineHeight: 24,
 									}}
 								>
-									I know some words in {language}
+									I know some words in {language.languageName}
 								</Text>
 							</View>
 						</View>
@@ -100,9 +127,21 @@ const App = () => {
 							color={checkboxValues.checkbox2 ? "#4CA6A8" : undefined}
 							style={styles.box}
 						/>
-					</View>
+					</TouchableOpacity>
 
-					<View style={styles.item}>
+					<TouchableOpacity
+						onPress={() => {
+							store.dispatch({
+								type: "SAVE_USER_TYPE",
+								payload: "Intermediate",
+							});
+							handleCheckboxChange("checkbox3");
+						}}
+						style={[
+							{ borderColor: checkboxValues.checkbox3 ? "#4CA6A8" : "#ABB3C7" },
+							styles.item,
+						]}
+					>
 						<View style={{ flexDirection: "row" }}>
 							<Intermediate />
 							<View style={{ paddingHorizontal: 10 }}>
@@ -124,7 +163,7 @@ const App = () => {
 										lineHeight: 24,
 									}}
 								>
-									{`I can have simple conversations in \n ${language}`}
+									{`I can have simple conversations in \n ${language.languageName}`}
 								</Text>
 							</View>
 						</View>
@@ -135,7 +174,7 @@ const App = () => {
 							color={checkboxValues.checkbox3 ? "#4CA6A8" : undefined}
 							style={styles.box}
 						/>
-					</View>
+					</TouchableOpacity>
 				</View>
 
 				<View>
@@ -159,7 +198,7 @@ export const styles = StyleSheet.create({
 
 	item: {
 		borderWidth: 1,
-		borderColor: "#2F3540",
+
 		borderRadius: 8,
 		flexDirection: "row",
 		justifyContent: "space-between",

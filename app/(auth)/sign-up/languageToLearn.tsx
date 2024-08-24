@@ -14,6 +14,7 @@ import FilledButton from "@/components/ui/FilledButton";
 import CustomHeader from "@/components/ui/CustomHeader";
 import { fetchData } from "@/api/requests";
 import { Link } from "expo-router";
+import store from "@/constants/store";
 
 const languageToLearn = () => {
 	const [data, setData] = useState(null);
@@ -45,6 +46,7 @@ const languageToLearn = () => {
 					styles.box,
 				]}
 				onPress={() => {
+					store.dispatch({ type: "SAVE_LANGUAGE", payload: item });
 					setLang(item.languageName);
 				}}
 			>

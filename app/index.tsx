@@ -1,4 +1,4 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, StatusBar } from "react-native";
 import { StyleSheet } from "react-native";
 
 import React, { type FC } from "react";
@@ -9,6 +9,7 @@ import { Link } from "expo-router";
 const Welcome = () => {
 	return (
 		<View style={styles.container}>
+			<StatusBar hidden />
 			<Image
 				source={require("@/assets/images/designs/doodles.png")}
 				style={styles.doodle}
@@ -66,7 +67,6 @@ export default Welcome;
 export const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-
 		backgroundColor: "#1B1E26",
 	},
 

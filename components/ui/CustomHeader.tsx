@@ -5,7 +5,7 @@ import { router } from "expo-router";
 
 const CustomHeader = () => {
 	return (
-		<View style={{ marginBottom: 17, marginHorizontal: 10 }}>
+		<View style={{ marginBottom: 17, marginHorizontal: 17 }}>
 			<TouchableOpacity onPress={() => router.back()}>
 				<Back />
 			</TouchableOpacity>

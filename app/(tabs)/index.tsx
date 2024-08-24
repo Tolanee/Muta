@@ -1,31 +1,207 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-
-
+import {
+	Clickboard,
+	Forward,
+	Intermediate,
+	Play,
+	UnitedStates,
+	Unlock,
+} from "../../assets/icons/Icons";
+import {
+	Image,
+	StyleSheet,
+	Platform,
+	View,
+	Text,
+	ScrollView,
+	SafeAreaView,
+	FlatList,
+	Pressable,
+} from "react-native";
 
 export default function HomeScreen() {
-  return (
-    <ScrollView>
-    
-    </ScrollView>
-  );
+	const leaderBoard = [
+		{
+			id: 1,
+			name: "Tino Vinus",
+			icon: <UnitedStates />,
+			country: "United States",
+			score: "🏆 15,832",
+		},
+		{
+			id: 2,
+			name: "Tino Vinus",
+			icon: <UnitedStates />,
+			country: "United States",
+			score: "🏆 15,832",
+		},
+		{
+			id: 3,
+			name: "Tino Vinus",
+			icon: <UnitedStates />,
+			country: "United States",
+			score: "🏆 15,832",
+		},
+	];
+	const RenderItems = ({ items }) => {
+		return (
+			<View style={styles.list}>
+				<View style={{ flexDirection: "row", alignItems: "center" }}>
+					<Image
+						source={require("../../assets/images/designs/profilePic.png")}
+						height={48}
+						width={48}
+					/>
+					<View>
+						<Text style={styles.text}>{items.name}</Text>
+						<View style={styles.country}>
+							<Text
+								style={{
+									paddingRight: 8,
+									paddingTop: 8,
+									color: "#fff",
+									fontSize: 15,
+									fontFamily: "Axioforma",
+								}}
+							>
+								{items.country}
+							</Text>
+							{items.icon}
+						</View>
+					</View>
+				</View>
+
+				<View>
+					<Text style={{ color: "#FF8700", fontWeight: 500, fontSize: 13 }}>
+						{items.score}
+					</Text>
+				</View>
+			</View>
+		);
+	};
+	return (
+		<SafeAreaView>
+			<View style={styles.container}>
+				<FlatList
+					data={leaderBoard}
+					keyExtractor={(item) => item.id}
+					renderItem={({ item }) => <RenderItems items={item} />}
+					showsVerticalScrollIndicator={false}
+					ListHeaderComponent={() => (
+						<View>
+							<View style={styles.board}>
+								<Text style={styles.text}>Intermediate </Text>
+								<Text style={styles.text}>Lesson 2</Text>
+								<Pressable style={styles.learnBtn}>
+									<Text>Start Learning</Text>
+									<Play />
+								</Pressable>
+							</View>
+							<View style={styles.review}>
+								<View style={{ flexDirection: "row", alignItems: "center" }}>
+									<Clickboard />
+									<Text
+										style={{
+											fontSize: 16,
+											fontFamily: "Axiforma",
+											fontWeight: 700,
+											paddingHorizontal: 17,
+										}}
+									>
+										Review your most recent lesson
+									</Text>
+								</View>
+
+								<Forward fill="#848A99" />
+							</View>
+							<View
+								style={{
+									flexDirection: "row",
+									justifyContent: "space-between",
+									marginTop: 20,
+								}}
+							>
+								<Text style={{ fontWeight: 700, color: "#fff", fontSize: 16 }}>
+									Leaderboard
+								</Text>
+								<Forward fill="#fff" />
+							</View>
+						</View>
+					)}
+					ListFooterComponent={() => (
+						<View style={styles.unlock}>
+							<Unlock />
+							<Text
+								style={{
+									fontSize: 16,
+									fontFamily: "Aniforma",
+									fontWeight: 500,
+									paddingHorizontal: 15,
+								}}
+							>
+								Upgrade now to unlock all lessons
+							</Text>
+						</View>
+					)}
+				/>
+			</View>
+		</SafeAreaView>
+	);
 }
 
 export const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+	container: {
+		paddingHorizontal: 17,
+	},
+	text: {
+		color: "#fff",
+		fontSize: 15,
+		fontWeight: 700,
+		fontFamily: "Axioforma",
+	},
+	board: {
+		padding: 10,
+		backgroundColor: "#2F3540",
+		borderRadius: 5,
+	},
+	learnBtn: {
+		padding: 10,
+		marginVertical: 17,
+		borderRadius: 50,
+		backgroundColor: "#BBECED",
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "space-between",
+		width: "50%",
+	},
+	country: {
+		flexDirection: "row",
+		alignItems: "center",
+	},
+	list: {
+		flexDirection: "row",
+		backgroundColor: "#2F3540",
+		borderRadius: 5,
+		padding: 8,
+		marginVertical: 9,
+		alignItems: "center",
+		justifyContent: "space-between",
+	},
+	unlock: {
+		backgroundColor: "#BBECED",
+		borderRadius: 32,
+		padding: 15,
+		flexDirection: "row",
+		alignItems: "center",
+		marginVertical: 20,
+	},
+	review: {
+		backgroundColor: "#FFF5DC",
+		paddingVertical: 17,
+		paddingHorizontal: 10,
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "space-between",
+		borderRadius: 16,
+		marginVertical: 20,
+	},
 });

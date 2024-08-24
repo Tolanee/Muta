@@ -9,7 +9,22 @@ import React, { useState } from "react";
 import CustomHeader from "@/components/ui/CustomHeader";
 import GeneralHeaderText from "@/components/ui/GeneralHeaderText";
 import CustomInput from "@/components/ui/CustomInput";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
+import apiClient from "@/api/apiClient";
+import { z } from "zod";
+import { postData } from "@/api/requests";
+import store from "@/constants/store";
+
+// {"email": "addie@a.com",
+// "password": "password"}
+
+const saveToken = (token) => {
+	store.dispatch({ type: "SAVE_TOKEN", payload: token }); // Dispatch an action to save the token
+};
+const signInSchema = z.object({
+	email: z.string().email("Invalid email address"),
+	password: z.string().min(8, "Password must be at least 8 characters"),
+});
 
 const enterPassword = () => {
 	const [formData, setFormData] = useState({
@@ -27,27 +42,32 @@ const enterPassword = () => {
 
 	const handleSubmit = async () => {
 		setSubmitted(true); // Mark the form as submitted
-
-		try {
-			// Validate form data
-			const validatedData = signUpSchema.parse(formData);
-			console.log("Form data is valid:", validatedData);
+		const validatedData = signInSchema.parse(formData);
+		// console.log("Form data is valid:", validatedData);
+		postData("login", validatedData).then((res) => {
+			const token = res.token;
+			saveToken(token);
+			// console.log(token);
 			router.push("(tabs)");
-			// Make the API call
-			const response = await apiClient.post("create-user", validatedData);
-			console.log("API response:", response.data);
-		} catch (error) {
-			if (error instanceof z.ZodError) {
-				const formattedErrors = error.issues.reduce((acc, curr) => {
-					acc[curr.path[0]] = curr.message;
-					return acc;
-				}, {});
-				setErrors(formattedErrors);
-				console.error("Validation failed:", formattedErrors);
-			} else {
-				console.error("API call failed:", error);
-			}
-		}
+		});
+		// try {
+		// 	const validatedData = signInSchema.parse(formData);
+		// 	console.log("Form data is valid:", validatedData);
+		// 	const response = await apiClient.post("login", validatedData);
+		// 	console.log("API response:", response.data);
+		// 	router.push("(tabs)");
+		// } catch (error) {
+		// 	if (error instanceof z.ZodError) {
+		// 		const formattedErrors = error.issues.reduce((acc, curr) => {
+		// 			acc[curr.path[0]] = curr.message;
+		// 			return acc;
+		// 		}, {});
+		// 		setErrors(formattedErrors);
+		// 		console.error("Validation failed:", formattedErrors);
+		// 	} else {
+		// 		console.error("API call failed:", error);
+		// 	}
+		// }
 	};
 
 	return (
