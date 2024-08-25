@@ -1,19 +1,21 @@
 import apiClient from "./apiClient";
 
-
 export const fetchData = async (url) => {
 	try {
 		const response = await apiClient.get(url);
-		return response.data; 
+		console.log("====================================");
+		console.log(response.data );
+		console.log("====================================");
+		return response.data;
 	} catch (error) {
-		throw error; 
+		throw error;
 	}
 };
 export const postData = async (url, data) => {
 	try {
 		const response = await apiClient.post(url, data);
-		return response.data; 
+		return response.data;
 	} catch (error) {
-		throw error; 
+		throw error;
 	}
 };

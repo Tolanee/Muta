@@ -1,4 +1,13 @@
-import { View, Text, StyleSheet, SafeAreaView, Image } from "react-native";
+import {
+	View,
+	Text,
+	StyleSheet,
+	SafeAreaView,
+	Image,
+	KeyboardAvoidingView,
+	Alert,
+	TouchableOpacity,
+} from "react-native";
 import React, { useState } from "react";
 import { FilledButton } from "../../../components/ui/FilledButton";
 import GeneralHeaderText from "@/components/ui/GeneralHeaderText";
@@ -9,7 +18,7 @@ import SignUpBtn from "@/components/ui/SignUpBtn";
 import { Google, Facebook } from "../../../assets/icons/Icons";
 import { z } from "zod";
 
-const signUpSchema = z.object({
+const signInSchema = z.object({
 	email: z.string().email("Invalid email address"),
 });
 const SignIn = () => {
@@ -27,67 +36,81 @@ const SignIn = () => {
 
 	const handleSubmit = () => {
 		setSubmitted(true);
-		const validatedData = signUpSchema.parse(formData);
+		const validatedData = signInSchema.parse(formData);
 		router.push({
 			pathname: "/sign-in/enterPassword",
 			params: { email: formData.email },
 		});
 	};
+
+	const alertEmail = () => {
+		Alert.alert(
+			"Input Your Email",
+			"Kindly Input your email before you proceed",
+			[{ text: "OK", onPress: () => console.log("OK Pressed") }],
+			{ cancelable: false },
+		);
+	};
 	return (
 		<View style={styles.container}>
 			<SafeAreaView>
-				<CustomHeader />
-				<GeneralHeaderText
-					title="Log in to Muta"
-					position="center"
-				/>
-				<SignUpBtn
-					image={<Google />}
-					title="Sign Up with Google"
-					href={() => {
-						console.log("====================================");
-						console.log("google");
-						console.log("====================================");
-					}}
-				/>
-				<SignUpBtn
-					image={<Facebook />}
-					title="Sign Up with Facebook"
-					href={() => {
-						console.log("====================================");
-						console.log("facebook");
-						console.log("====================================");
-					}}
-				/>
-				<CustomInput
-					placeholder="Enter email address"
-					type="email"
-					label="Email"
-					value={formData.email}
-					onChange={(value) => handleChange("email", value)}
-					error={submitted ? errors.email : undefined}
-				/>
-				<View>
-					<FilledButton
-						title="SIGN IN WITH EMAIL"
-						href="sign-in/enterPassword"
+				<KeyboardAvoidingView>
+					<CustomHeader />
+					<GeneralHeaderText
+						title="Log in to Muta"
+						position="center"
 					/>
-				</View>
+					<SignUpBtn
+						image={<Google />}
+						title="Sign Up with Google"
+						href={() => {
+							console.log("====================================");
+							console.log("google");
+							console.log("====================================");
+						}}
+					/>
+					<SignUpBtn
+						image={<Facebook />}
+						title="Sign Up with Facebook"
+						href={() => {
+							console.log("====================================");
+							console.log("facebook");
+							console.log("====================================");
+						}}
+					/>
+					<CustomInput
+						placeholder="Enter email address"
+						type="email"
+						label="Email"
+						value={formData.email}
+						onChange={(value) => handleChange("email", value)}
+						error={submitted ? errors.email : undefined}
+					/>
 
-				<View
-					style={{
-						flexDirection: "row",
-						alignItems: "center",
-						justifyContent: "center",
-					}}
-				>
-					<Text style={{ color: "#FFF" }}>
-						Don’t have a Muta account?
-						<Link href="sign-up">
-							<Text style={{ color: "#4CA6A8" }}> Sign Up</Text>
-						</Link>
-					</Text>
-				</View>
+					<View style={{ margin: 17 }}>
+						<TouchableOpacity
+							style={formData.email ? styles.button : styles.buttonDisabled}
+							onPress={formData.email ? handleSubmit : alertEmail}
+						>
+							<Text>SIGN IN WITH EMAIL</Text>
+						</TouchableOpacity>
+					</View>
+
+					<View
+						style={{
+							flexDirection: "row",
+							alignItems: "center",
+							justifyContent: "center",
+						}}
+					>
+						<Text style={{ color: "#FFF" }}>
+							Don’t have a Muta account?
+							<Link href="sign-up">
+								<Text style={{ color: "#4CA6A8" }}> Sign Up</Text>
+							</Link>
+						</Text>
+					</View>
+				</KeyboardAvoidingView>
 			</SafeAreaView>
 		</View>
 	);
@@ -98,5 +121,21 @@ export const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: "#1B1E26",
+	},
+	button: {
+		padding: 17,
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
+		borderRadius: 8,
+		backgroundColor: "#4CA6A8",
+	},
+	buttonDisabled: {
+		padding: 17,
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
+		borderRadius: 8,
+		backgroundColor: "#ABB3C7",
 	},
 });

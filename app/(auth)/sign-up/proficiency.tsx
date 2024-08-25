@@ -5,20 +5,24 @@ import {
 	StyleSheet,
 	SafeAreaView,
 	TouchableOpacity,
+	Alert,
 } from "react-native";
 import CheckBox from "expo-checkbox";
 import { FilledButton } from "@/components/ui/FilledButton";
 import CustomHeader from "@/components/ui/CustomHeader";
 import GeneralHeaderText from "@/components/ui/GeneralHeaderText";
 import { Beginner, Intermediate, Novice } from "@/assets/icons/Icons";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useSelector } from "react-redux";
 import store from "@/constants/store";
 
 const App = () => {
 	const language = useSelector((state) => state.language);
+	const usertype = useSelector((state) => state.type);
 	// const { language } = useLocalSearchParams();
-
+	console.log("====================================");
+	console.log(usertype);
+	console.log("====================================");
 	const [checkboxValues, setCheckboxValues] = useState({
 		checkbox1: false,
 		checkbox2: false,
@@ -32,6 +36,20 @@ const App = () => {
 		});
 	};
 
+	const handleSubmit = () => {
+		router.push({
+			pathname: "/sign-up/signUp",
+		});
+	};
+
+	const alertChooseProficiency = () => {
+		Alert.alert(
+			"Choose one",
+			"Choose a proficiency level before you proceed",
+			[{ text: "OK", onPress: () => console.log("OK Pressed") }],
+			{ cancelable: false },
+		);
+	};
 	return (
 		<View style={styles.container}>
 			<SafeAreaView>
@@ -177,11 +195,13 @@ const App = () => {
 					</TouchableOpacity>
 				</View>
 
-				<View>
-					<FilledButton
-						title="CONTINUE"
-						href="sign-up/signUp"
-					/>
+				<View style={{ margin: 17 }}>
+					<TouchableOpacity
+						style={usertype ? styles.con : styles.buttonDisabled}
+						onPress={usertype ? handleSubmit : alertChooseProficiency}
+					>
+						<Text style={styles.tex}>CONTINUE</Text>
+					</TouchableOpacity>
 				</View>
 			</SafeAreaView>
 		</View>
@@ -192,7 +212,6 @@ export default App;
 export const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-
 		backgroundColor: "#1B1E26",
 	},
 
@@ -207,5 +226,26 @@ export const styles = StyleSheet.create({
 	},
 	box: {
 		borderRadius: 100,
+	},
+	con: {
+		padding: 17,
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
+		borderRadius: 8,
+		backgroundColor: "#4CA6A8",
+	},
+	tex: {
+		fontSize: 14,
+		fontFamily: "Axiforma",
+		fontWeight: 700,
+	},
+	buttonDisabled: {
+		padding: 17,
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
+		borderRadius: 8,
+		backgroundColor: "#ABB3C7",
 	},
 });

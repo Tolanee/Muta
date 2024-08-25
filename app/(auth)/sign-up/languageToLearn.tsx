@@ -7,19 +7,23 @@ import {
 	Image,
 	Pressable,
 	TouchableOpacity,
+	ActivityIndicator,
+	Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import GeneralHeaderText from "@/components/ui/GeneralHeaderText";
 import FilledButton from "@/components/ui/FilledButton";
 import CustomHeader from "@/components/ui/CustomHeader";
 import { fetchData } from "@/api/requests";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import store from "@/constants/store";
+import { lang } from "moment-jalaali";
 
 const languageToLearn = () => {
 	const [data, setData] = useState(null);
 	const [error, setError] = useState(null);
-	const [lang, setLang] = useState("");
+	const [language, setLanguage] = useState("");
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
 		fetchData("get-all-languages")
@@ -28,22 +32,50 @@ const languageToLearn = () => {
 				// console.log("response", res.data);
 				setData(res.data);
 			})
-			.catch((error) => setError(error));
+			.catch((error) => setError(error))
+			.finally(() => setIsLoading(false));
 	}, []);
+
+	if (isLoading) {
+		return (
+			<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+				<ActivityIndicator
+					size="large"
+					color="#0ff"
+				/>
+			</View>
+		);
+	}
+
+	const handleSubmit = () => {
+		router.push({
+			pathname: "/sign-up/proficiency",
+			params: { language: language },
+		});
+	};
+
+	const alertChooseLanguage = () => {
+		Alert.alert(
+			"Choose one",
+			"Choose a language you want to learn before you proceed",
+			[{ text: "OK", onPress: () => console.log("OK Pressed") }],
+			{ cancelable: false },
+		);
+	};
 
 	const _renderItems = ({ item }) => {
 		return (
 			<TouchableOpacity
 				style={[
 					{
-						borderWidth: item.languageName === lang ? 2 : 1,
-						borderColor: item.languageName === lang ? "#4CA6A8" : "#ABB3C7",
+						borderWidth: item.languageName === language ? 2 : 1,
+						borderColor: item.languageName === language ? "#4CA6A8" : "#ABB3C7",
 					},
 					styles.box,
 				]}
 				onPress={() => {
 					store.dispatch({ type: "SAVE_LANGUAGE", payload: item });
-					setLang(item.languageName);
+					setLanguage(item.languageName);
 				}}
 			>
 				<Image
@@ -74,17 +106,12 @@ const languageToLearn = () => {
 
 				<View>
 					<View style={{ margin: 17 }}>
-						<Link
-							href={{
-								pathname: "/sign-up/proficiency",
-								params: { language: lang },
-							}}
-							asChild
+						<TouchableOpacity
+							style={language ? styles.con : styles.buttonDisabled}
+							onPress={language ? handleSubmit : alertChooseLanguage}
 						>
-							<TouchableOpacity style={styles.con}>
-								<Text style={styles.tex}>CONTINUE</Text>
-							</TouchableOpacity>
-						</Link>
+							<Text style={styles.tex}>CONTINUE</Text>
+						</TouchableOpacity>
 					</View>
 				</View>
 			</SafeAreaView>
@@ -128,5 +155,13 @@ export const styles = StyleSheet.create({
 		fontSize: 14,
 		fontFamily: "Axiforma",
 		fontWeight: 700,
+	},
+	buttonDisabled: {
+		padding: 17,
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
+		borderRadius: 8,
+		backgroundColor: "#ABB3C7",
 	},
 });

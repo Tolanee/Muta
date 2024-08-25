@@ -5,6 +5,7 @@ import {
 	SafeAreaView,
 	Image,
 	TouchableOpacity,
+	KeyboardAvoidingView,
 } from "react-native";
 import React, { useState } from "react";
 import { FilledButton } from "../../../components/ui/FilledButton";
@@ -15,7 +16,7 @@ import CustomHeader from "../../../components/ui/CustomHeader";
 import SignUpBtn from "@/components/ui/SignUpBtn";
 import { Google, Facebook } from "../../../assets/icons/Icons";
 import { z } from "zod";
-import errorMap from "zod/lib/locales/en";
+import { Alert } from "react-native";
 
 const signUpSchema = z.object({
 	email: z.string().email("Invalid email address"),
@@ -45,59 +46,70 @@ const SignUp = () => {
 		});
 	};
 
+	const alertEmail = () => {
+		Alert.alert(
+			"Input Your Email",
+			"Kindly Input your email before you proceed",
+			[{ text: "OK", onPress: () => console.log("OK Pressed") }],
+			{ cancelable: false },
+		);
+	};
+
 	return (
 		<View style={styles.container}>
 			<SafeAreaView>
-				<View style={{ padding: 17 }}>
-					<CustomHeader />
-				</View>
+				<KeyboardAvoidingView>
+					<View style={{ padding: 17 }}>
+						<CustomHeader />
+					</View>
 
-				<GeneralHeaderText
-					title="Sign up and start learning right away!"
-					position="center"
-				/>
-				<SignUpBtn
-					image={<Google />}
-					title="Sign Up with Google"
-					href={() => goToGoogle}
-				/>
-				<SignUpBtn
-					image={<Facebook />}
-					title="Sign Up with Facebook"
-					href={() => goToFacebook} // Change goToGoogle to goToFacebook
-				/>
-				<CustomInput
-					placeholder="Enter email address"
-					type="email"
-					label="Email"
-					value={formData.email}
-					onChange={(value) => handleChange("email", value)}
-					error={submitted ? errors.email : undefined}
-				/>
+					<GeneralHeaderText
+						title="Sign up and start learning right away!"
+						position="center"
+					/>
+					<SignUpBtn
+						image={<Google />}
+						title="Sign Up with Google"
+						href={() => goToGoogle}
+					/>
+					<SignUpBtn
+						image={<Facebook />}
+						title="Sign Up with Facebook"
+						href={() => goToFacebook} // Change goToGoogle to goToFacebook
+					/>
+					<CustomInput
+						placeholder="Enter email address"
+						type="email"
+						label="Email"
+						value={formData.email}
+						onChange={(value) => handleChange("email", value)}
+						error={submitted ? errors.email : undefined}
+					/>
 
-				<View style={{ margin: 17 }}>
-					<TouchableOpacity
-						style={styles.button}
-						onPress={handleSubmit}
+					<View style={{ margin: 17 }}>
+						<TouchableOpacity
+							style={formData.email ? styles.button : styles.buttonDisabled}
+							onPress={formData.email ? handleSubmit : alertEmail}
+						>
+							<Text>SIGN UP WITH EMAIL</Text>
+						</TouchableOpacity>
+					</View>
+
+					<View
+						style={{
+							flexDirection: "row",
+							alignItems: "center",
+							justifyContent: "center",
+						}}
 					>
-						<Text>SIGN UP WITH EMAIL</Text>
-					</TouchableOpacity>
-				</View>
-
-				<View
-					style={{
-						flexDirection: "row",
-						alignItems: "center",
-						justifyContent: "center",
-					}}
-				>
-					<Text style={{ color: "#FFF" }}>
-						Already a Muta User?
-						<Link href="sign-in">
-							<Text style={{ color: "#4CA6A8" }}> Log In</Text>
-						</Link>
-					</Text>
-				</View>
+						<Text style={{ color: "#FFF" }}>
+							Already a Muta User?
+							<Link href="sign-in">
+								<Text style={{ color: "#4CA6A8" }}> Log In</Text>
+							</Link>
+						</Text>
+					</View>
+				</KeyboardAvoidingView>
 			</SafeAreaView>
 		</View>
 	);
@@ -116,5 +128,13 @@ export const styles = StyleSheet.create({
 		alignItems: "center",
 		borderRadius: 8,
 		backgroundColor: "#4CA6A8",
+	},
+	buttonDisabled: {
+		padding: 17,
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
+		borderRadius: 8,
+		backgroundColor: "#ABB3C7",
 	},
 });

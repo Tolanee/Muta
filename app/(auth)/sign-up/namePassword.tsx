@@ -4,6 +4,8 @@ import {
 	StyleSheet,
 	TouchableOpacity,
 	SafeAreaView,
+	KeyboardAvoidingView,
+	Alert,
 } from "react-native";
 import React, { useState } from "react";
 import GeneralHeaderText from "@/components/ui/GeneralHeaderText";
@@ -37,7 +39,7 @@ const NamePassword = () => {
 		firstName: "",
 		lastName: "",
 		password: "",
-		spokenLanguage: language.language_id,
+		spokenLanguage: "7d0f00aa-1028-4871-abc1-0237dff35356",
 		userType: type,
 		country: {
 			name: "Nigeria",
@@ -47,6 +49,7 @@ const NamePassword = () => {
 	});
 	const [errors, setErrors] = useState({});
 	const [submitted, setSubmitted] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const handleChange = (field, value) => {
 		setFormData((prevData) => ({ ...prevData, [field]: value }));
@@ -55,96 +58,86 @@ const NamePassword = () => {
 	};
 
 	const handleSubmit = async () => {
-		setSubmitted(true); // Mark the form as submitted
+		setSubmitted(true);
+		setLoading(true);
 		const validatedData = signUpSchema.parse(formData);
 		// console.log("Form data is valid:", validatedData);
-		postData("create-user", validatedData).then((res) => {
-			const token = res.token;
-			saveToken(token);
-		});
-		// try {
-		// 	// Validate form data
-		// 	const validatedData = signUpSchema.parse(formData);
-		// 	console.log("Form data is valid:", validatedData);
-		// 	router.push("(tabs)");
-		// 	// Make the API call
-		// 	const response = await apiClient.post("create-user", validatedData);
-		// 	console.log("API response:", response.data);
-		// } catch (error) {
-		// 	if (error instanceof z.ZodError) {
-		// 		const formattedErrors = error.issues.reduce((acc, curr) => {
-		// 			acc[curr.path[0]] = curr.message;
-		// 			return acc;
-		// 		}, {});
-		// 		setErrors(formattedErrors);
-		// 		console.error("Validation failed:", formattedErrors);
-		// 	} else {
-		// 		console.error("API call failed:", error);
-		// 	}
-		// }
+		postData("create-user", validatedData)
+			.then((res) => {
+				const token = res.token;
+				saveToken(token);
+				setLoading(false);
+			})
+			.catch((error) => {
+				console.log(error.data[0].message);
+				setLoading(false);
+				Alert.alert("Error", error.data[0].message);
+			});
 	};
 
 	return (
 		<View style={styles.container}>
 			<SafeAreaView>
-				<CustomHeader />
-				<GeneralHeaderText
-					title="Enter name and password"
-					position="flex-start"
-				/>
-				<CustomInput
-					placeholder=""
-					type="email"
-					label="Email"
-					value={formData.email}
-					onChange={(value) => handleChange("email", value)}
-					error={submitted ? errors.email : undefined} // Show error only if form is submitted
-				/>
-				<CustomInput
-					type="text"
-					label="First Name"
-					value={formData.firstName}
-					onChange={(value) => handleChange("firstName", value)}
-					error={submitted ? errors.firstName : undefined} // Show error only if form is submitted
-				/>
-				<CustomInput
-					type="text"
-					label="Last Name"
-					value={formData.lastName}
-					onChange={(value) => handleChange("lastName", value)}
-					error={submitted ? errors.lastName : undefined} // Show error only if form is submitted
-				/>
-				<CustomInput
-					type="password"
-					label="Password"
-					value={formData.password}
-					onChange={(value) => handleChange("password", value)}
-					error={submitted ? errors.password : undefined} // Show error only if form is submitted
-				/>
+				<KeyboardAvoidingView>
+					<CustomHeader />
+					<GeneralHeaderText
+						title="Enter name and password"
+						position="flex-start"
+					/>
+					<CustomInput
+						placeholder=""
+						type="email"
+						label="Email"
+						value={formData.email}
+						onChange={(value) => handleChange("email", value)}
+						error={submitted ? errors.email : undefined} // Show error only if form is submitted
+					/>
+					<CustomInput
+						type="text"
+						label="First Name"
+						value={formData.firstName}
+						onChange={(value) => handleChange("firstName", value)}
+						error={submitted ? errors.firstName : undefined} // Show error only if form is submitted
+					/>
+					<CustomInput
+						type="text"
+						label="Last Name"
+						value={formData.lastName}
+						onChange={(value) => handleChange("lastName", value)}
+						error={submitted ? errors.lastName : undefined} // Show error only if form is submitted
+					/>
+					<CustomInput
+						type="password"
+						label="Password"
+						value={formData.password}
+						onChange={(value) => handleChange("password", value)}
+						error={submitted ? errors.password : undefined} // Show error only if form is submitted
+					/>
 
-				<View style={{ margin: 17 }}>
-					<TouchableOpacity
-						style={styles.button}
-						onPress={handleSubmit}
+					<View style={{ margin: 17 }}>
+						<TouchableOpacity
+							style={styles.button}
+							onPress={handleSubmit}
+						>
+							<Text>{loading ? "SIGNING UP" : "SIGN UP"}</Text>
+						</TouchableOpacity>
+					</View>
+
+					<View
+						style={{
+							flexDirection: "row",
+							alignItems: "center",
+							justifyContent: "center",
+						}}
 					>
-						<Text>SIGN UP</Text>
-					</TouchableOpacity>
-				</View>
-
-				<View
-					style={{
-						flexDirection: "row",
-						alignItems: "center",
-						justifyContent: "center",
-					}}
-				>
-					<Text style={{ color: "#FFF" }}>
-						Already a Muta User?
-						<Link href="sign-in">
-							<Text style={{ color: "#4CA6A8" }}> Log In</Text>
-						</Link>
-					</Text>
-				</View>
+						<Text style={{ color: "#FFF" }}>
+							Already a Muta User?
+							<Link href="sign-in">
+								<Text style={{ color: "#4CA6A8" }}> Log In</Text>
+							</Link>
+						</Text>
+					</View>
+				</KeyboardAvoidingView>
 			</SafeAreaView>
 		</View>
 	);
