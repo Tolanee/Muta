@@ -9,7 +9,7 @@ import React, { useState } from "react";
 import CustomHeader from "@/components/ui/CustomHeader";
 import GeneralHeaderText from "@/components/ui/GeneralHeaderText";
 import CustomInput from "@/components/ui/CustomInput";
-import { Link, router } from "expo-router";
+import { Link, router, useLocalSearchParams } from "expo-router";
 import apiClient from "@/api/apiClient";
 import { z } from "zod";
 import { postData } from "@/api/requests";
@@ -27,8 +27,10 @@ const signInSchema = z.object({
 });
 
 const enterPassword = () => {
+	const { email } = useLocalSearchParams();
+
 	const [formData, setFormData] = useState({
-		email: "",
+		email: email,
 		password: "",
 	});
 	const [errors, setErrors] = useState({});
@@ -135,7 +137,6 @@ export const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		borderRadius: 8,
-		width: 342,
 		backgroundColor: "#4CA6A8",
 	},
 });

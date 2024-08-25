@@ -1,12 +1,27 @@
 import { View, Text, Image, StatusBar } from "react-native";
 import { StyleSheet } from "react-native";
 
-import React, { type FC } from "react";
+import React, { useEffect, useRef } from "react";
 import FilledButton from "@/components/ui/FilledButton";
 import Button2 from "../components/ui/Button2";
-import { Link } from "expo-router";
+import { router } from "expo-router";
+import { isLoggedIn } from "@/constants/utils";
+import { current } from "@reduxjs/toolkit";
 
 const Welcome = () => {
+	const isMountedRef = useRef(false);
+	useEffect(() => {
+		if (isMountedRef.current && isLoggedIn) {
+			router.push("(tabs)");
+		}
+	}, [isLoggedIn]);
+
+	useEffect(() => {
+		isMountedRef.current = true;
+		return () => {
+			isMountedRef.current = false;
+		};
+	}, []);
 	return (
 		<View style={styles.container}>
 			<StatusBar hidden />

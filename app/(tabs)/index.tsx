@@ -2,6 +2,8 @@ import {
 	Clickboard,
 	Forward,
 	Intermediate,
+	Lesson,
+	Level,
 	Play,
 	UnitedStates,
 	Unlock,
@@ -17,6 +19,7 @@ import {
 	FlatList,
 	Pressable,
 } from "react-native";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 export default function HomeScreen() {
 	const leaderBoard = [
@@ -52,7 +55,16 @@ export default function HomeScreen() {
 						width={48}
 					/>
 					<View>
-						<Text style={styles.text}>{items.name}</Text>
+						<Text
+							style={{
+								color: "#fff",
+								fontSize: 16,
+								fontWeight: 700,
+								fontFamily: "Axioforma",
+							}}
+						>
+							{items.name}
+						</Text>
 						<View style={styles.country}>
 							<Text
 								style={{
@@ -88,13 +100,93 @@ export default function HomeScreen() {
 					showsVerticalScrollIndicator={false}
 					ListHeaderComponent={() => (
 						<View>
+							<View style={styles.header}>
+								<View
+									style={{ flexDirection: "row", gap: 5, alignItems: "center" }}
+								>
+									<Text
+										style={{
+											color: "#fff",
+											fontSize: 16,
+											fontWeight: 700,
+											fontFamily: "Axioforma",
+										}}
+									>
+										Yoruba
+									</Text>
+									<FontAwesome
+										name="caret-down"
+										size={24}
+										color="white"
+									/>
+								</View>
+
+								<View
+									style={{ flexDirection: "row", gap: 5, alignItems: "center" }}
+								>
+									<FontAwesome
+										name="bell-o"
+										size={24}
+										color="white"
+									/>
+									<FontAwesome
+										name="user-circle-o"
+										size={24}
+										color="white"
+									/>
+								</View>
+							</View>
 							<View style={styles.board}>
-								<Text style={styles.text}>Intermediate </Text>
-								<Text style={styles.text}>Lesson 2</Text>
-								<Pressable style={styles.learnBtn}>
-									<Text>Start Learning</Text>
-									<Play />
-								</Pressable>
+								<View style={{ padding: 10, flex: 1 }}>
+									<View
+										style={{
+											flexDirection: "row",
+											gap: 5,
+											alignItems: "center",
+										}}
+									>
+										<Level />
+										<Text
+											style={{
+												color: "#fff",
+												fontSize: 16,
+												fontWeight: 700,
+												fontFamily: "Axioforma",
+											}}
+										>
+											Intermediate
+										</Text>
+									</View>
+									<View
+										style={{
+											flexDirection: "row",
+											gap: 5,
+											alignItems: "center",
+										}}
+									>
+										<Lesson />
+										<Text
+											style={{
+												color: "#fff",
+												fontSize: 16,
+												fontWeight: 700,
+												fontFamily: "Axioforma",
+											}}
+										>
+											Lesson 2
+										</Text>
+									</View>
+									<Pressable style={styles.learnBtn}>
+										<Text>Start Learning</Text>
+										<Play />
+									</Pressable>
+								</View>
+
+								<View>
+									<Image
+										source={require("../../assets/images/designs/yoruba.png")}
+									/>
+								</View>
 							</View>
 							<View style={styles.review}>
 								<View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -152,26 +244,35 @@ export const styles = StyleSheet.create({
 	container: {
 		paddingHorizontal: 17,
 	},
+	header: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+		paddingVertical: 17,
+	},
 	text: {
 		color: "#fff",
-		fontSize: 15,
+		fontSize: 16,
 		fontWeight: 700,
 		fontFamily: "Axioforma",
 	},
 	board: {
-		padding: 10,
+		paddingVertical: 17,
+		marginVertical: 17,
+		flexDirection: "row",
+		justifyContent: "space-between",
 		backgroundColor: "#2F3540",
 		borderRadius: 5,
 	},
 	learnBtn: {
 		padding: 10,
 		marginVertical: 17,
+		marginRight: 17,
 		borderRadius: 50,
 		backgroundColor: "#BBECED",
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-between",
-		width: "50%",
 	},
 	country: {
 		flexDirection: "row",

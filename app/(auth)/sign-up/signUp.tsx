@@ -48,7 +48,10 @@ const SignUp = () => {
 	return (
 		<View style={styles.container}>
 			<SafeAreaView>
-				<CustomHeader />
+				<View style={{ padding: 17 }}>
+					<CustomHeader />
+				</View>
+
 				<GeneralHeaderText
 					title="Sign up and start learning right away!"
 					position="center"

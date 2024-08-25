@@ -1,16 +1,48 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, SafeAreaView, FlatList } from "react-native";
+import {
+	View,
+	Text,
+	StyleSheet,
+	SafeAreaView,
+	FlatList,
+	TouchableOpacity,
+	Image,
+} from "react-native";
 import CheckBox from "expo-checkbox";
+import English from "../../../assets/images/designs/English.png";
+import French from "../../../assets/images/designs/French.png";
+import Portuguese from "../../../assets/images/designs/Portuguese.png";
+import Spanish from "../../../assets/images/designs/Spanish.png";
 
-import  FilledButton  from "../../../components/ui/FilledButton";
+import FilledButton from "../../../components/ui/FilledButton";
 import CustomHeader from "@/components/ui/CustomHeader";
 
 const App = () => {
 	const [items, setItems] = useState([
-		{ id: "1", label: "I speak English", isChecked: false },
-		{ id: "2", label: "Je parle Français", isChecked: false },
-		{ id: "3", label: "Eu falo Português", isChecked: false },
-		{ id: "4", label: "Yo hablo Español", isChecked: false },
+		{
+			id: "1",
+			label: "I speak English",
+			image: English,
+			isChecked: false,
+		},
+		{
+			id: "2",
+			label: "Je parle Français",
+			image: French,
+			isChecked: false,
+		},
+		{
+			id: "3",
+			label: "Eu falo Português",
+			image: Portuguese,
+			isChecked: false,
+		},
+		{
+			id: "4",
+			label: "Yo hablo Español",
+			image: Spanish,
+			isChecked: false,
+		},
 	]);
 
 	const toggleCheckbox = (id) => {
@@ -21,19 +53,36 @@ const App = () => {
 		);
 	};
 
-	const renderItem = ({ item }) => (
-		<View style={styles.item}>
-			<Text style={{ color: "#fff", fontSize: 16, fontFamily: "Axiforma" }}>
-				{item.label}
-			</Text>
-			<CheckBox
-				value={item.isChecked}
-				onValueChange={() => toggleCheckbox(item.id)}
-				color={item.isChecked ? "#4CA6A8" : undefined}
-				style={styles.box}
-			/>
-		</View>
-	);
+	const renderItem = ({ item }) => {
+		return (
+			<TouchableOpacity
+				onPress={() => {
+					toggleCheckbox(item.id);
+				}}
+				style={[
+					{ borderColor: item.isChecked ? "#4CA6A8" : "#ABB3C7" },
+					styles.item,
+				]}
+			>
+				<View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
+					<Image
+						source={item.image}
+						style={{ width: 48, height: 48 }}
+					/>
+					<Text style={{ color: "#fff", fontSize: 16, fontFamily: "Axiforma" }}>
+						{item.label}
+					</Text>
+				</View>
+
+				<CheckBox
+					value={item.isChecked}
+					onValueChange={() => toggleCheckbox(item.id)}
+					color={item.isChecked ? "#4CA6A8" : undefined}
+					style={styles.box}
+				/>
+			</TouchableOpacity>
+		);
+	};
 
 	return (
 		<View style={styles.container}>

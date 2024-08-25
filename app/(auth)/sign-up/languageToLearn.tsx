@@ -31,10 +31,6 @@ const languageToLearn = () => {
 			.catch((error) => setError(error));
 	}, []);
 
-	// interface RenderProps {
-	// 	item: string;
-	// }
-
 	const _renderItems = ({ item }) => {
 		return (
 			<TouchableOpacity
@@ -60,8 +56,8 @@ const languageToLearn = () => {
 	};
 	return (
 		<View style={styles.container}>
-			<SafeAreaView>
-				<View style={{ paddingHorizontal: 17 }}>
+			<SafeAreaView style={{ flex: 1 }}>
+				<View style={{ paddingHorizontal: 17, flex: 1 }}>
 					<CustomHeader />
 					<GeneralHeaderText
 						title="I want to learn...."
