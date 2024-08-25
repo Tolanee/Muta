@@ -39,11 +39,24 @@ const SignUp = () => {
 
 	const handleSubmit = () => {
 		setSubmitted(true);
-		const validatedData = signUpSchema.parse(formData);
-		router.push({
-			pathname: "/sign-up/namePassword",
-			params: { email: formData.email },
-		});
+
+		const result = signUpSchema.safeParse(formData);
+
+		if (!result.success) {
+			// If the input doesn't meet the schema requirements, show errors
+			const errors = result.error.issues.reduce((acc, issue) => {
+				acc[issue.path[0]] = issue.message;
+				return acc;
+			}, {});
+
+			setErrors(errors);
+		} else {
+			const validatedData = result.data;
+			router.push({
+				pathname: "/sign-up/namePassword",
+				params: { email: formData.email },
+			});
+		}
 	};
 
 	const alertEmail = () => {

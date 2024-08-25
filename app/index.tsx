@@ -82,11 +82,12 @@ const Welcome = () => {
 						flexDirection: "row",
 						alignItems: "center",
 						justifyContent: "center",
+						marginVertical: 20,
 					}}
 				>
 					<Text style={{ color: "#FFF" }}>
 						By continuing on the app, you agree to Mutas{" "}
-						<Text style={{ color: "#4CA6A8" }}>Terms of service </Text> and
+						<Text style={{ color: "#4CA6A8" }}>Terms of service </Text> and{" "}
 						<Text style={{ color: "#4CA6A8" }}>Terms of service </Text>
 					</Text>
 				</View>

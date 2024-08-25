@@ -45,27 +45,59 @@ const enterPassword = () => {
 		setErrors((prevErrors) => ({ ...prevErrors, [field]: undefined }));
 	};
 
+	// const handleSubmit = async () => {
+	// 	setSubmitted(true);
+	// 	setLoading(true);
+	// 	const validatedData = signInSchema.parse(formData);
+
+	// 	postData("login", validatedData)
+	// 		.then((res) => {
+	// 			const token = res.token;
+	// 			saveToken(token);
+	// 			setLoading(false);
+	// 			router.push("(tabs)");
+	// 		})
+	// 		.catch((error) => {
+	// 			setLoading(false);
+	// 			if (error instanceof ZodError) {
+	// 				const errorMessage = error.issues[0].message;
+	// 				Alert.alert("Validation Error", errorMessage);
+	// 			} else {
+	// 				Alert.alert("Error", error.message);
+	// 			}
+	// 		});
+	// };
+
 	const handleSubmit = async () => {
 		setSubmitted(true);
 		setLoading(true);
-		const validatedData = signInSchema.parse(formData);
 
-		postData("login", validatedData)
-			.then((res) => {
-				const token = res.token;
-				saveToken(token);
-				setLoading(false);
-				router.push("(tabs)");
-			})
-			.catch((error) => {
-				setLoading(false);
-				if (error instanceof ZodError) {
-					const errorMessage = error.issues[0].message;
-					Alert.alert("Validation Error", errorMessage);
-				} else {
-					Alert.alert("Error", error.message);
-				}
-			});
+		const result = signInSchema.safeParse(formData);
+
+		if (!result.success) {
+			// If the input doesn't meet the schema requirements, show errors
+			const errors = result.error.issues.reduce((acc, issue) => {
+				acc[issue.path[0]] = issue.message;
+				return acc;
+			}, {});
+
+			setErrors(errors);
+		} else {
+			const validatedData = result.data;
+			console.log("Form data is valid:", validatedData);
+			postData("login", validatedData)
+				.then((res) => {
+					const token = res.token;
+					saveToken(token);
+					setLoading(false);
+					router.push("(tabs)");
+				})
+				.catch((error) => {
+					console.log(error.data[0].message);
+					setLoading(false);
+					Alert.alert("Error", error.data[0].message);
+				});
+		}
 	};
 
 	return (
@@ -83,7 +115,7 @@ const enterPassword = () => {
 						label="Email"
 						value={formData.email}
 						onChange={(value) => handleChange("email", value)}
-						error={submitted ? errors.email : undefined} // Show error only if form is submitted
+						error={submitted ? errors.email : undefined} 
 					/>
 
 					<CustomInput
@@ -91,7 +123,7 @@ const enterPassword = () => {
 						label="Password"
 						value={formData.password}
 						onChange={(value) => handleChange("password", value)}
-						error={submitted ? errors.password : undefined} // Show error only if form is submitted
+						error={submitted ? errors.password : undefined} 
 					/>
 
 					<View style={{ margin: 17 }}>

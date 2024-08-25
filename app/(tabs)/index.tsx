@@ -20,8 +20,10 @@ import {
 	Pressable,
 } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useSelector } from "react-redux";
 
 export default function HomeScreen() {
+	const language = useSelector((state) => state.language);
 	const leaderBoard = [
 		{
 			id: 1,
@@ -112,7 +114,7 @@ export default function HomeScreen() {
 											fontFamily: "Axioforma",
 										}}
 									>
-										Yoruba
+										{language.languageName}
 									</Text>
 									<FontAwesome
 										name="caret-down"

@@ -12,7 +12,7 @@ import GeneralHeaderText from "@/components/ui/GeneralHeaderText";
 import CustomInput from "../../../components/ui/CustomInput";
 import { Link, router, useLocalSearchParams } from "expo-router";
 
-import { z } from "zod";
+import { object, optional, string, z } from "zod";
 import apiClient from "@/api/apiClient";
 import CustomHeader from "@/components/ui/CustomHeader";
 import { postData } from "@/api/requests";
@@ -20,18 +20,27 @@ import store from "@/constants/store";
 import { useSelector } from "react-redux";
 
 const signUpSchema = z.object({
-	email: z.string().email("Invalid email address"),
+	email: z.string().email("Invalid email address").min(1, "Email is required"),
 	firstName: z.string().min(1, "First name is required"),
 	lastName: z.string().min(1, "Last name is required"),
 	password: z.string().min(8, "Password must be at least 8 characters"),
+	spokenLanguage: z.string().optional(),
+	userType: z.string().optional(),
+	country: z.object({
+		name: z.string(),
+		code: z.string(),
+		flag: z.string(),
+	}),
 });
 
 const NamePassword = () => {
 	const { email } = useLocalSearchParams();
 	const type = useSelector((state) => state.type);
 	const language = useSelector((state) => state.language);
+
+	//Dispatching an icon to save token
 	const saveToken = (token) => {
-		store.dispatch({ type: "SAVE_TOKEN", payload: token }); // Dispatch an action to save the token
+		store.dispatch({ type: "SAVE_TOKEN", payload: token });
 	};
 
 	const [formData, setFormData] = useState({
@@ -39,7 +48,7 @@ const NamePassword = () => {
 		firstName: "",
 		lastName: "",
 		password: "",
-		spokenLanguage: "7d0f00aa-1028-4871-abc1-0237dff35356",
+		spokenLanguage: language.language_id,
 		userType: type,
 		country: {
 			name: "Nigeria",
@@ -57,22 +66,55 @@ const NamePassword = () => {
 		setErrors((prevErrors) => ({ ...prevErrors, [field]: undefined }));
 	};
 
+	// const handleSubmit = async () => {
+	// 	setSubmitted(true);
+	// 	setLoading(true);
+	// 	const validatedData = signUpSchema.parse(formData);
+	// 	console.log("Form data is valid:", validatedData);
+	// 	postData("create-user", validatedData)
+	// 		.then((res) => {
+	// 			const token = res.token;
+	// 			saveToken(token);
+	// 			setLoading(false);
+	// 			router.push("(tabs)");
+	// 		})
+	// 		.catch((error) => {
+	// 			console.log(error.data[0].message);
+	// 			setLoading(false);
+	// 			Alert.alert("Error", error.data[0].message);
+	// 		});
+	// };
+
 	const handleSubmit = async () => {
 		setSubmitted(true);
 		setLoading(true);
-		const validatedData = signUpSchema.parse(formData);
-		// console.log("Form data is valid:", validatedData);
-		postData("create-user", validatedData)
-			.then((res) => {
-				const token = res.token;
-				saveToken(token);
-				setLoading(false);
-			})
-			.catch((error) => {
-				console.log(error.data[0].message);
-				setLoading(false);
-				Alert.alert("Error", error.data[0].message);
-			});
+
+		const result = signUpSchema.safeParse(formData);
+
+		if (!result.success) {
+			// If the input doesn't meet the schema requirements, show errors
+			const errors = result.error.issues.reduce((acc, issue) => {
+				acc[issue.path[0]] = issue.message;
+				return acc;
+			}, {});
+
+			setErrors(errors);
+		} else {
+			const validatedData = result.data;
+			console.log("Form data is valid:", validatedData);
+			postData("create-user", validatedData)
+				.then((res) => {
+					const token = res.token;
+					saveToken(token);
+					setLoading(false);
+					router.push("(tabs)");
+				})
+				.catch((error) => {
+					console.log(error.data[0].message);
+					setLoading(false);
+					Alert.alert("Error", error.data[0].message);
+				});
+		}
 	};
 
 	return (
@@ -97,7 +139,7 @@ const NamePassword = () => {
 						label="First Name"
 						value={formData.firstName}
 						onChange={(value) => handleChange("firstName", value)}
-						error={submitted ? errors.firstName : undefined} // Show error only if form is submitted
+						error={errors.firstName} // Show error only if form is submitted
 					/>
 					<CustomInput
 						type="text"
@@ -119,7 +161,7 @@ const NamePassword = () => {
 							style={styles.button}
 							onPress={handleSubmit}
 						>
-							<Text>{loading ? "SIGNING UP" : "SIGN UP"}</Text>
+							<Text>{loading ? "SIGNING UP ..." : "SIGN UP"}</Text>
 						</TouchableOpacity>
 					</View>
 
