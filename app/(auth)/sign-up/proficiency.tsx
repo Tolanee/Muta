@@ -19,10 +19,7 @@ import store from "@/constants/store";
 const App = () => {
 	const language = useSelector((state) => state.language);
 	const usertype = useSelector((state) => state.type);
-	// const { language } = useLocalSearchParams();
-	console.log("====================================");
-	console.log(usertype);
-	console.log("====================================");
+
 	const [checkboxValues, setCheckboxValues] = useState({
 		checkbox1: false,
 		checkbox2: false,

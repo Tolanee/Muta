@@ -28,8 +28,6 @@ const languageToLearn = () => {
 	useEffect(() => {
 		fetchData("get-all-languages")
 			.then((res) => {
-				// console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-				// console.log("response", res.data);
 				setData(res.data);
 			})
 			.catch((error) => setError(error))

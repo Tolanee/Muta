@@ -66,25 +66,6 @@ const NamePassword = () => {
 		setErrors((prevErrors) => ({ ...prevErrors, [field]: undefined }));
 	};
 
-	// const handleSubmit = async () => {
-	// 	setSubmitted(true);
-	// 	setLoading(true);
-	// 	const validatedData = signUpSchema.parse(formData);
-	// 	console.log("Form data is valid:", validatedData);
-	// 	postData("create-user", validatedData)
-	// 		.then((res) => {
-	// 			const token = res.token;
-	// 			saveToken(token);
-	// 			setLoading(false);
-	// 			router.push("(tabs)");
-	// 		})
-	// 		.catch((error) => {
-	// 			console.log(error.data[0].message);
-	// 			setLoading(false);
-	// 			Alert.alert("Error", error.data[0].message);
-	// 		});
-	// };
-
 	const handleSubmit = async () => {
 		setSubmitted(true);
 		setLoading(true);
@@ -101,7 +82,6 @@ const NamePassword = () => {
 			setErrors(errors);
 		} else {
 			const validatedData = result.data;
-			console.log("Form data is valid:", validatedData);
 			postData("create-user", validatedData)
 				.then((res) => {
 					const token = res.token;
@@ -110,7 +90,6 @@ const NamePassword = () => {
 					router.push("(tabs)");
 				})
 				.catch((error) => {
-					console.log(error.data[0].message);
 					setLoading(false);
 					Alert.alert("Error", error.data[0].message);
 				});
